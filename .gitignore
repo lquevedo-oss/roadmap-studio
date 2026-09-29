@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+node_modules/
+.next/
+.wrangler/
+dist/
+build/
+__pycache__/
+*.pyc
+*.db
+*.sqlite*
+instance/
+uploads/*
+!uploads/.gitkeep
+*.log
+.DS_Store

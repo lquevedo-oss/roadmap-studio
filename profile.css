@@ -1,0 +1,60 @@
+/* Transitions.dev — Skeleton loader and reveal, adapted to the Atlas header. */
+:root {
+  --pulse-dur:1000ms; --pulse-count:1; --pulse-min:.5;
+  --reveal-dur:400ms; --reveal-blur:2px; --reveal-ease:ease-in-out;
+  --dropdown-open-dur:250ms; --dropdown-close-dur:150ms;
+  --dropdown-pre-scale:.97; --dropdown-closing-scale:.99;
+  --dropdown-ease:cubic-bezier(.22,1,.36,1);
+}
+.profile { position:relative;flex:none }
+.profile-trigger { width:166px;height:48px;border:1px solid transparent;border-radius:12px;color:var(--blue);text-align:left }
+.profile-trigger[aria-expanded="true"] { background:#f1f1fb;border-color:#e2e2f3 }
+.profile-trigger:disabled { cursor:default }
+.profile-trigger:focus-visible { outline:2px solid var(--blue);outline-offset:3px }
+.t-skel { position:relative }
+.t-skel-skeleton,.t-skel-content { position:absolute;inset:0;display:flex;align-items:center;gap:10px;padding:5px 8px;pointer-events:none }
+.t-skel-skeleton { z-index:1;opacity:1;filter:blur(0);transition:opacity var(--reveal-dur) var(--reveal-ease),filter var(--reveal-dur) var(--reveal-ease) }
+.t-skel-content { z-index:2;opacity:0;filter:blur(var(--reveal-blur));transition:opacity var(--reveal-dur) var(--reveal-ease),filter var(--reveal-dur) var(--reveal-ease) }
+.t-skel.is-revealed .t-skel-skeleton { opacity:0;filter:blur(var(--reveal-blur)) }
+.t-skel.is-revealed .t-skel-content { opacity:1;filter:blur(0) }
+.t-skel.is-resetting .t-skel-skeleton,.t-skel.is-resetting .t-skel-content { transition:none!important }
+.t-skel-skeleton.is-pulsing>* { animation:t-skel-pulse var(--pulse-dur) ease-in-out var(--pulse-count) }
+@keyframes t-skel-pulse { 0%,100%{opacity:1}50%{opacity:var(--pulse-min)} }
+.profile-avatar,.profile-skeleton-avatar { width:34px;height:34px;flex:none;border-radius:50% }
+.profile-avatar { display:grid;place-items:center;background:var(--blue);color:var(--cream);font-size:15px;font-weight:600;line-height:1 }
+.profile-skeleton-avatar,.profile-skeleton-lines>span { background:#e8e8f4 }
+.profile-skeleton-lines { display:grid;gap:6px;flex:1 }
+.profile-skeleton-lines>span { height:8px;border-radius:4px;width:82% }
+.profile-skeleton-lines>span:last-child { width:58%;height:6px }
+.profile-copy { display:grid;gap:3px;min-width:0;flex:1;line-height:1.2 }
+.profile-copy strong { font-size:13px;font-weight:600 }
+.profile-copy>span { font-size:10px;color:#74768e }
+.profile-copy>* { white-space:nowrap;overflow:hidden;text-overflow:ellipsis }
+.profile-chevron { width:14px;height:14px;flex:none;color:#8889a2 }
+.profile-menu { position:absolute;top:calc(100% + 10px);right:0;width:196px;padding:6px;background:white;border:1px solid #e3e3f0;border-radius:12px;box-shadow:0 10px 32px #04047f14,0 2px 6px #04047f08;z-index:45 }
+.t-dropdown { transform-origin:top right;transform:scale(var(--dropdown-pre-scale));opacity:0;visibility:hidden;pointer-events:none;transition:transform var(--dropdown-close-dur) var(--dropdown-ease),opacity var(--dropdown-close-dur) var(--dropdown-ease),visibility 0s var(--dropdown-close-dur) }
+.t-dropdown.is-open { transform:scale(1);opacity:1;visibility:visible;pointer-events:auto;transition:transform var(--dropdown-open-dur) var(--dropdown-ease),opacity var(--dropdown-open-dur) var(--dropdown-ease) }
+.profile-menu button { display:flex;align-items:center;gap:11px;width:100%;min-height:44px;padding:10px 12px;border-radius:7px;font-size:13px;font-weight:500;color:var(--navy);text-align:left }
+.profile-menu button>.icon { width:18px;height:18px;color:var(--blue) }
+.profile-menu button:focus-visible { background:#ededfa;outline:2px solid var(--blue);outline-offset:-2px }
+.profile[data-instant="true"] .t-dropdown { transition:none }
+@media(hover:hover) and (pointer:fine) {
+  .profile-trigger:not(:disabled):hover { background:#f5f5fc }
+  .profile-menu button:hover { background:#f1f1fb }
+}
+@media(max-width:1100px) {
+  .profile-trigger { width:44px;height:44px;border-radius:50% }
+  .profile-trigger .t-skel-skeleton,.profile-trigger .t-skel-content { padding:4px;justify-content:center }
+  .profile-copy,.profile-skeleton-lines,.profile-chevron { display:none }
+}
+@media(max-width:760px) {
+  .header-inner { gap:8px }
+  .header-inner nav { gap:0 }
+}
+@media(max-width:359px) { .header-inner .product-name { display:none } }
+.motion-paused .t-skel-skeleton,.motion-paused .t-skel-content,.motion-paused .t-dropdown { transition:none!important }
+.motion-paused .t-skel-skeleton.is-pulsing>* { animation:none!important }
+@media(prefers-reduced-motion:reduce) {
+  .t-skel-skeleton,.t-skel-content,.t-dropdown { transition:none!important }
+  .t-skel-skeleton.is-pulsing>* { animation:none!important }
+}

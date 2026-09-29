@@ -1,0 +1,81 @@
+/* Atlas-specific presentation layered over the unmodified library recipes. */
+:root {
+  --tabs-text-muted: #646a85;
+  --tabs-text-active: #fdf2e7;
+  --tabs-bar-bg: #eeeff8;
+  --tabs-pill-bg: #04047f;
+  --glow-opacity: .85;
+  --reel-cell: 1.35em;
+}
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0 }
+
+/* The native input renders normal typing, selections and IME composition.
+   Its mirror takes over only for the clear animation. */
+.search-wrap.t-clear { isolation:isolate;gap:10px;padding-right:7px;overflow:clip }
+.search-wrap.t-clear input { min-width:0;flex:1;caret-color:var(--blue) }
+.t-clear.has-value:not(.is-clearing)>input { -webkit-text-fill-color:currentColor }
+.t-clear.has-value:not(.is-clearing) .t-clear-mirror { opacity:0 }
+.search-wrap .t-clear-mirror,.search-wrap .t-clear-placeholder {
+  inset:0 var(--field-text-right,45px) 0 var(--field-text-left,43px);
+  font:inherit;font-size:14px;color:var(--navy);line-height:normal;
+}
+.t-clear-value { display:block;white-space:pre;flex-shrink:0 }
+.search-wrap .t-clear-placeholder { opacity:0;color:#7a8096 }
+.search-wrap.is-clearing>input::placeholder { color:transparent }
+.search-wrap input::-webkit-search-cancel-button { -webkit-appearance:none;appearance:none }
+.t-clear-btn { flex:none;display:grid;place-items:center;width:36px;height:36px;padding:0;border-radius:50%;color:var(--blue);background:#efeffb;z-index:4 }
+.t-clear-btn[hidden] { display:none }
+.t-clear-btn .icon { width:15px;height:15px }
+.search-wrap kbd { margin-right:6px;flex:none }
+.search-wrap.has-value kbd,.search-wrap.is-clearing kbd { display:none }
+.search-wrap.is-clearing { padding-right:43px }
+.search-wrap .t-clear-glow { z-index:3 }
+.t-clear-btn:focus-visible { outline-offset:-3px }
+@media(hover:hover) and (pointer:fine) { .t-clear-btn:hover { background:#e2e2fb } }
+
+/* This changes how one shared result region is displayed, so the original
+   group + aria-pressed semantics stay in place rather than inventing tabpanels. */
+.view-toggle.t-tabs { flex:none;border:1px solid #e2e3f0;border-radius:48px;padding:4px;gap:3px;background:var(--tabs-bar-bg);isolation:isolate }
+.view-toggle .t-tab { min-height:38px;height:38px;padding:6px 12px;border-radius:48px;font-weight:600;color:var(--tabs-text-muted);background:transparent;box-shadow:none;transition:color var(--tabs-dur) var(--tabs-ease) }
+.view-toggle .t-tab.active { background:transparent;box-shadow:none;color:var(--tabs-text-active) }
+.view-toggle .t-tabs-pill { top:4px;height:38px;box-shadow:0 2px 5px #04047f12 }
+.view-toggle .t-tab:focus-visible { outline:2px solid #8888e3;outline-offset:1px }
+@media(hover:hover) and (pointer:fine) { .view-toggle .t-tab:not(.active):hover { color:var(--blue);background:transparent } }
+
+/* The stable hit area, floating button and pointer tilt are separate layers.
+   A touch gesture remains a page scroll instead of being captured by the art. */
+.platform-interaction.t-tilt { position:relative;z-index:2;width:100%;touch-action:pan-y pinch-zoom }
+.platform-preview .t-tilt-card { display:block;width:100%;border-radius:10px;overflow:visible }
+.platform-preview .t-tilt-card>img { display:block;width:100%;height:auto;border-radius:0;user-select:none;-webkit-user-drag:none }
+.platform-preview .t-tilt-glare { border-radius:10px;z-index:3 }
+.platform-preview .expand-label { z-index:4 }
+.platform-interaction:focus-within .t-tilt-card { transform:none }
+.platform-interaction:focus-within .t-tilt-glare { opacity:0 }
+
+.ecosystem strong.stat-number { display:inline-flex;position:relative;align-items:center;vertical-align:baseline;letter-spacing:-.025em }
+.stat-number .t-reel { line-height:1 }
+.t-reel-col { width:.62em;flex:none }
+.t-reel-digit { min-height:var(--reel-cell);flex:none }
+.t-reel:not(.is-spinning) .t-reel-col { mask-image:none;-webkit-mask-image:none }
+.reel-filter-defs { position:absolute;width:0;height:0;pointer-events:none }
+.motion-paused .t-tabs-pill,.motion-paused .t-tab,.motion-paused .t-tilt-card,.motion-paused .t-reel-strip { transition:none!important }
+.motion-paused .t-tilt-card { transform:none!important }
+.motion-paused .t-clear-glow,.motion-paused .t-tilt-glare { opacity:0!important }
+@media(max-width:1199px) { .view-toggle .t-tab { padding-inline:10px } }
+@media(max-width:760px) {
+  .search-row { display:grid;grid-template-columns:minmax(0,1fr);gap:10px }
+  .search-wrap.t-clear { width:100%;height:50px;padding-left:14px }
+  .search-wrap .t-clear-mirror,.search-wrap .t-clear-placeholder { font-size:16px }
+  .t-clear-btn { width:44px;height:44px }
+  .search-wrap.is-clearing { padding-right:51px }
+  .view-toggle.t-tabs { width:100%;gap:3px;justify-content:stretch }
+  .view-toggle .t-tab { flex:1;justify-content:center;min-width:0;min-height:44px;height:44px;padding:6px 10px;font-size:12px }
+  .view-toggle .t-tab span { display:inline }
+  .view-toggle .t-tabs-pill { height:44px }
+  .stage-tabs { margin-top:2px }
+  .roadmap-content button,.roadmap-content input,.roadmap-content select { scroll-margin-top:245px }
+}
+@media(prefers-reduced-motion:reduce) {
+  .t-clear-mirror,.t-clear-placeholder { transform:none!important;filter:none!important }
+  .t-tilt-glare { opacity:0!important }
+}
